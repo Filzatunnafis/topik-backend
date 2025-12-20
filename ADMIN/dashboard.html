@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+
+  <!-- SECURITY CHECK (RUN BEFORE PAGE LOAD) -->
+  <script>
+    if (sessionStorage.getItem("adminLoggedIn") !== "true") {
+      window.location.href = "login.html";
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 30px;
+      color: #333;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .logout-btn {
+      float: right;
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: none;
+      background: #dc3545;
+      color: #fff;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .logout-btn:hover {
+      background: #b52a37;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      min-width: 900px;
+    }
+
+    thead {
+      background: #f0f2f5;
+    }
+
+    th, td {
+      padding: 12px 14px;
+      text-align: left;
+      font-size: 14px;
+      vertical-align: top;
+    }
+
+    th {
+      font-weight: 600;
+      color: #555;
+      border-bottom: 2px solid #ddd;
+      white-space: nowrap;
+    }
+
+    td {
+      border-bottom: 1px solid #eee;
+    }
+
+    tr:hover {
+      background: #fafafa;
+    }
+
+    .status {
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    .status.pending {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .status.approved {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .status.rejected {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .action-btn {
+      padding: 6px 12px;
+      font-size: 13px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      background: #007bff;
+      color: #fff;
+    }
+
+    .action-btn:hover {
+      background: #0056b3;
+    }
+
+    .reason {
+      max-width: 260px;
+      color: #721c24;
+      font-size: 13px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    .reason.empty {
+      color: #999;
+      font-style: italic;
+    }
+  </style>
+</head>
+
+<body>
+
+  <button class="logout-btn" onclick="logout()">Logout</button>
+
+  <h2>Admin Dashboard</h2>
+
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>Registration No</th>
+          <th>Name</th>
+          <th>TOPIK</th>
+          <th>Status</th>
+          <th>Rejection Reason</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+  <script>
+    function logout() {
+      sessionStorage.removeItem("adminLoggedIn");
+      window.location.href = "login.html";
+    }
+  </script>
+
+  <script src="admin.js"></script>
+</body>
+</html>

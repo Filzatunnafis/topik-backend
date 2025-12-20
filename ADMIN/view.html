@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TOPIK – Registration Review</title>
+
+<style>
+/* ================= GLOBAL ================= */
+body{
+  font-family: Arial, "Malgun Gothic", sans-serif;
+  font-size:13px;
+  color:#000;
+  margin:0;
+  background:#e5e5e5;
+}
+
+/* ================= TOP NAV ================= */
+.top-nav{
+  max-width:210mm;
+  margin:20px auto 0;
+  padding:0 15mm;
+  box-sizing:border-box;
+}
+
+.top-nav button{
+  background:#555;
+  color:#fff;
+  border:none;
+  padding:6px 14px;
+  font-size:13px;
+  cursor:pointer;
+}
+
+/* ================= A4 PAGE ================= */
+.a4-page{
+  width:210mm;
+  min-height:297mm;
+  margin:10px auto 0;
+  padding:15mm;
+  background:#fff;
+  box-shadow:0 0 8px rgba(0,0,0,0.15);
+  box-sizing:border-box;
+}
+
+/* ================= TITLE ================= */
+.title{
+  text-align:center;
+  margin-bottom:12px;
+  line-height:1.4;
+}
+
+/* ================= TABLE BASE ================= */
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-bottom:12px;
+  table-layout:fixed;
+}
+
+td{
+  border:1px solid #000;
+  padding:6px 8px;
+  vertical-align:middle;
+  word-wrap:break-word;
+}
+
+/* ================= LABEL ================= */
+.label{
+  width:160px;
+  font-weight:bold;
+  background:#f5f5f5;
+  white-space:nowrap;
+}
+
+/* ================= VALUE ================= */
+.value{
+  background:#fff;
+}
+
+/* ================= PHOTO ================= */
+.photo-cell{
+  width:170px;
+  text-align:center;
+}
+
+.photo-box{
+  width:100%;
+  height:180px;
+  border:1px solid #000;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+}
+
+.photo-box img{
+  max-width:100%;
+  max-height:130px;
+}
+
+/* ================= YELLOW ================= */
+.yellow-table td{
+  background:#fff6a5;
+}
+
+/* ================= ACTIONS ================= */
+.actions{
+  max-width:210mm;
+  margin:10px auto 30px;
+  padding:0 15mm;
+  box-sizing:border-box;
+  text-align:right;
+}
+
+.actions button{
+  padding:6px 16px;
+  font-size:13px;
+  cursor:pointer;
+  margin-left:6px;
+}
+
+.approve{
+  background:#1a7f37;
+  color:#fff;
+  border:none;
+}
+
+.reject{
+  background:#b42318;
+  color:#fff;
+  border:none;
+}
+
+/* ================= REJECT MODAL ================= */
+#rejectModal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.5);
+  z-index:9999;
+}
+
+#rejectModal .modal-box{
+  background:#fff;
+  width:420px;
+  max-width:90%;
+  margin:10% auto;
+  padding:16px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.3);
+}
+
+#rejectModal textarea{
+  width:100%;
+  box-sizing:border-box;
+  font-size:13px;
+  margin-top:6px;
+}
+
+/* ================= PRINT ================= */
+@media print{
+  body{ background:none; }
+  .top-nav, .actions{ display:none; }
+  .a4-page{
+    box-shadow:none;
+    margin:0;
+    width:210mm;
+    min-height:297mm;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ===== TOP NAV ===== -->
+<div class="top-nav">
+ <button id="backBtn" type="button">← Back</button>
+</div>
+
+<!-- ===== A4 DOCUMENT ===== -->
+<div class="a4-page">
+
+<h2 class="title">
+제99회 한국어능력시험 응시원서<br>
+The 99th TOPIK Application Form
+</h2>
+
+<!-- STATUS TEXT (WAJIB, MINIMAL) -->
+<p id="statusText" style="text-align:right; font-weight:bold;"></p>
+
+<!-- ===== TOP PART ===== -->
+<table>
+  <colgroup>
+    <col style="width:160px">
+    <col>
+    <col style="width:170px">
+  </colgroup>
+
+  <tr>
+    <td class="label">① 시험수준<br>Test Level</td>
+    <td class="value">
+      한국어능력시험 (TOPIK)
+      &nbsp;&nbsp;<b id="test_level"></b>
+    </td>
+    <td class="photo-cell" rowspan="2">
+      <div class="photo-box">
+        <img id="studentPhoto">
+      </div>
+    </td>
+  </tr>
+
+  <tr>
+    <td class="label">② 수험번호<br>Registration No.</td>
+    <td class="value" id="registration_number"></td>
+  </tr>
+
+  <tr>
+    <td class="label">③ 응시지역<br>Testing Area</td>
+    <td class="value" colspan="2">
+      쿠알라 룸푸르<br>Kuala Lumpur
+    </td>
+  </tr>
+
+  <tr>
+    <td class="label">④ 시험장<br>Testing Place</td>
+    <td class="value" colspan="2">
+      쿠알라 룸푸르대학교 (UNiKL)<br>
+      Universiti Kuala Lumpur
+    </td>
+  </tr>
+</table>
+
+<!-- ===== PERSONAL DETAILS ===== -->
+<table class="yellow-table">
+  <colgroup>
+    <col style="width:160px">
+    <col>
+    <col style="width:160px">
+    <col>
+  </colgroup>
+
+  <tr>
+    <td class="label">⑤ 성명<br>Name</td>
+    <td class="value">한글: <span id="name_korean"></span></td>
+    <td class="label">⑥ 성별<br>Gender</td>
+    <td class="value" id="gender"></td>
+  </tr>
+
+  <tr>
+    <td class="label">⑦ 영문<br>English</td>
+    <td class="value" id="name_english"></td>
+    <td class="label">⑧ 국적<br>Nationality</td>
+    <td class="value" id="nationality"></td>
+  </tr>
+
+  <tr>
+    <td class="label">⑨ 직업<br>Occupation</td>
+    <td class="value" id="occupation"></td>
+    <td class="label">⑩ 생년월일<br>Date of Birth</td>
+    <td class="value" id="dob"></td>
+  </tr>
+
+  <tr>
+    <td class="label">⑪ 주소<br>Address</td>
+    <td class="value" colspan="3" id="address"></td>
+  </tr>
+
+  <tr>
+    <td class="label">⑫ 전화번호<br>Telephone</td>
+    <td class="value" colspan="3">
+      Home: <span id="home_phone"></span>
+      &nbsp;&nbsp; Mobile: <span id="mobile_phone"></span>
+    </td>
+  </tr>
+
+  <tr>
+    <td class="label">⑬ 이메일<br>Email</td>
+    <td class="value" colspan="3" id="email"></td>
+  </tr>
+
+  <tr>
+    <td class="label">⑭ 응시동기<br>Motive</td>
+    <td class="value" colspan="3" id="motive"></td>
+  </tr>
+
+  <tr>
+    <td class="label">⑮ 응시목적<br>Purpose</td>
+    <td class="value" colspan="3" id="purpose"></td>
+  </tr>
+</table>
+
+</div>
+
+<!-- ===== ACTION BUTTONS ===== -->
+<div class="actions">
+  <button id="rejectBtn" class="reject">Reject</button>
+  <button id="approveBtn" class="approve">Approve</button>
+</div>
+
+<!-- ===== REJECT MODAL ===== -->
+<div id="rejectModal">
+  <div class="modal-box">
+    <h3>Reject Application</h3>
+
+    <label><b>Reason for rejection:</b></label>
+    <textarea id="rejectReason" rows="6"
+      placeholder="Enter detailed rejection reason here..."></textarea>
+
+    <div style="text-align:right; margin-top:12px;">
+      <button id="cancelRejectBtn" type="button">Cancel</button>
+      <button id="confirmRejectBtn" type="button"
+        style="background:#b42318;color:#fff;border:none;padding:6px 14px;">
+        Confirm Reject
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- SCRIPT WAJIB -->
+<script src="/admin-ui/admin.js"></script>
+</body>
+</html>
