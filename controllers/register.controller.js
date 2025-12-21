@@ -44,7 +44,7 @@ exports.registerStudent = async (req, res) => {
     const result = await registrationService.createRegistration({
       ...req.body,
       application_number: applicationNumber,
-      photopath: photoUrl
+      photo: photoUrl
     });
 
     /* ===============================

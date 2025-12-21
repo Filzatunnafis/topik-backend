@@ -29,7 +29,7 @@ module.exports.createRegistration = async (data) => {
     occupation,
     motive,
     purpose,
-    photoPath
+    photo
   } = data;
 
 
@@ -92,7 +92,7 @@ module.exports.createRegistration = async (data) => {
       occupation,
       finalMotive,
       finalPurpose,
-      photoPath
+      photo
     ]
   );
 
