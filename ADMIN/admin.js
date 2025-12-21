@@ -212,7 +212,11 @@ async function loadStudentFormForAdmin() {
   /* ===== PHOTO ===== */
   const img = document.getElementById("studentPhoto");
   if (img && data.photo) {
-    img.src = `https://topik-backend-ae3y.onrender.com/${data.photo_path}`;
+    img.src =data.photo;
+    img.style.display = "block";
+  } else {
+    img.style.display = "none";
+
   }
 
   /* ===== TEXT BINDING (KEKAL 100%) ===== */
