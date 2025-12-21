@@ -4,56 +4,67 @@ const API_BASE = "https://topik-backend-ae3y.onrender.com/admin";
    DASHBOARD – LIST ALL
    ========================= */
 async function loadRegistrations() {
-  const res = await fetch(`${API_BASE}/registrations`);
-  const data = await res.json();
+  try {
+    const res = await fetch(`${API_BASE}/registrations`);
+    const data = await res.json();
 
-  console.log("ADMIN.JS LOADED");
-  console.log("DATA FROM API:", data);
+    console.log("ADMIN.JS LOADED");
+    console.log("DATA FROM API:", data);
 
-  const tbody = document.getElementById("tableBody");
-  if (!tbody) return;
+    const tbody = document.getElementById("tableBody");
+    if (!tbody) return;
 
-  tbody.innerHTML = "";
+    tbody.innerHTML = "";
 
-  data.forEach(item => {
-    const tr = document.createElement("tr");
+    // SAFETY GUARD
+    if (!Array.isArray(data)) {
+      console.error("Expected array, got:", data);
+      return;
+    }
 
-    // ===== STATUS BADGE (WITH COLOUR) =====
-    const statusText = item.status || "PENDING";
-    const statusClass = statusText.toLowerCase(); // pending / approved / rejected
+    data.forEach(item => {
+      const tr = document.createElement("tr");
 
-    const statusHTML = `
-      <span class="status ${statusClass}">
-        ${statusText}
-      </span>
-    `;
+      // ===== STATUS BADGE =====
+      const statusText = item.status || "PENDING";
+      const statusClass = statusText.toLowerCase();
 
-    // ===== REJECTION REASON (TEXT ONLY) =====
-    const rejectionReason =
-      statusText === "REJECTED" && item.rejection_reason
-        ? item.rejection_reason
-        : "-";
+      const statusHTML = `
+        <span class="status ${statusClass}">
+          ${statusText}
+        </span>
+      `;
 
-    const reasonClass =
-      rejectionReason === "-" ? "reason empty" : "reason";
+      // ===== REJECTION REASON ===== //
+      const rejectionReason =
+        statusText === "REJECTED" && item.rejection_reason
+          ? item.rejection_reason
+          : "-";
 
-    tr.innerHTML = `
-      <td>${item.registration_number || "-"}</td>
-      <td>${item.english_name || item.korean_name || "-"}</td>
-      <td>${item.test_level || "-"}</td>
-      <td>${statusHTML}</td>
-      <td class="${reasonClass}">
-        ${rejectionReason}
-      </td>
-      <td>
-        <a class="action-btn" href="view.html?id=${item.id}">
-          View
-        </a>
-      </td>
-    `;
+      const reasonClass =
+        rejectionReason === "-" ? "reason empty" : "reason";
 
-    tbody.appendChild(tr);
-  });
+      tr.innerHTML = `
+        <td>${item.registration_number || "-"}</td>
+        <td>${item.english_name || item.korean_name || "-"}</td>
+        <td>${item.test_level || "-"}</td>
+        <td>${statusHTML}</td>
+        <td class="${reasonClass}">
+          ${rejectionReason}
+        </td>
+        <td>
+          <a class="action-btn" href="view.html?id=${item.id}">
+            View
+          </a>
+        </td>
+      `;
+
+      tbody.appendChild(tr);
+    });
+
+  } catch (err) {
+    console.error("LOAD REGISTRATIONS ERROR:", err);
+  }
 }
 
 /* =========================
@@ -204,7 +215,7 @@ async function loadStudentFormForAdmin() {
     img.src = `https://topik-backend-ae3y.onrender.com/${data.photo_path}`;
   }
 
-  /* ===== TEXT BINDING ===== */
+  /* ===== TEXT BINDING (KEKAL 100%) ===== */
   const setText = (id, value) => {
     const el = document.getElementById(id);
     if (el) el.textContent = value || "";
@@ -217,24 +228,24 @@ async function loadStudentFormForAdmin() {
   setText("gender", data.gender);
   setText("nationality", data.nationality);
   setText("occupation", data.occupation);
+
   function formatDOB(dob) {
-  if (!dob) return "";
-  const d = new Date(dob);
-  return d.toISOString().split("T")[0]; // YYYY-MM-DD
-}
+    if (!dob) return "";
+    const d = new Date(dob);
+    return d.toISOString().split("T")[0]; // YYYY-MM-DD
+  }
 
   setText("dob", formatDOB(data.date_of_birth));
-
   setText("address", data.address);
   setText("home_phone", data.home_phone);
   setText("mobile_phone", data.mobile_phone);
   setText("email", data.email);
   setText("purpose", data.purpose_of_application);
   setText(
-  "motive",
-  Array.isArray(data.motive_of_application)
-    ? data.motive_of_application.join(", ")
-    : data.motive_of_application
+    "motive",
+    Array.isArray(data.motive_of_application)
+      ? data.motive_of_application.join(", ")
+      : data.motive_of_application
   );
 
   /* ===== LOCK FORM (READ-ONLY) ===== */
