@@ -13,6 +13,17 @@ const rateLimit = require("express-rate-limit");
 const path = require("path");
 const fs = require("fs");
 
+/* ======================= */
+/* ENSURE UPLOAD FOLDERS   */
+/* ======================= */
+
+const uploadDir = path.join(__dirname, "uploads", "images");
+
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+  console.log("UPLOAD DIR CREATED:", uploadDir);
+}
+
 const registerRoutes = require("./routes/register.routes");
 const adminRoutes = require("./routes/admin.routes");
 
