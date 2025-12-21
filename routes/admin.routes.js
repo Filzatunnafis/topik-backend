@@ -4,7 +4,7 @@ const router = express.Router();
 const adminController = require("../controllers/admin.controller");
 
 // =======================
-// GET
+// GET 
 // =======================
 router.get("/registrations", adminController.getRegistrations);
 router.get("/registrations/:id", adminController.getRegistrationById);

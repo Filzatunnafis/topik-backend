@@ -13,9 +13,9 @@ const rateLimit = require("express-rate-limit");
 const path = require("path");
 const fs = require("fs");
 
-/* ======================= */
-/* ENSURE UPLOAD FOLDERS   */
-/* ======================= */
+// ======================= //
+// ENSURE UPLOAD FOLDERS   //
+// ======================= //
 
 const uploadDir = path.join(__dirname, "uploads", "images");
 

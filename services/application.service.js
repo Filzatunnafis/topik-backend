@@ -10,3 +10,4 @@ exports.generateApplicationNumber = () => {
 
   return `APP-${yyyy}${mm}${dd}-${hh}${mi}${ss}`;
 };
+ 

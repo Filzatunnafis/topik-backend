@@ -1,4 +1,3 @@
-// services/admin.service.js
 const pool = require("../db/pool");
 
 // =======================

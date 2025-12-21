@@ -1,7 +1,7 @@
 const pool = require("../db/pool");
 
 async function generateRegistrationNumber(testLevel) {
-  // Institution code
+  // Institution code 
   const institutionCode = "021001";
 
   // TOPIK I → 7, TOPIK II → 8

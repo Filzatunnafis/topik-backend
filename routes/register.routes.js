@@ -6,7 +6,7 @@ const path = require("path");
 const registerController = require("../controllers/register.controller");
 
 // =======================
-// MULTER CONFIG
+// MULTER CONFIG 
 // =======================
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

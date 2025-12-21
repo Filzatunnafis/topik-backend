@@ -3,7 +3,7 @@
 // =======================
 // Digunakan SEMASA STUDENT SUBMIT APPLICATION
 // BUKAN untuk admin approve
-// TIDAK generate registration number
+// NDA generate registration number
 
 const pool = require("../db/pool");
 const applicationService = require("./application.service");
@@ -47,7 +47,7 @@ module.exports.createRegistration = async (data) => {
   const finalPurpose     = purpose || null;
 
   // =======================
-  // 4. INSERT KE DATABASE
+  // 4. Insert ke DB
   // =======================
   await pool.query(
     `
@@ -101,7 +101,7 @@ module.exports.createRegistration = async (data) => {
   );
 
   // =======================
-  // 5. RETURN KE CONTROLLER
+  // 5. Return ke controller
   // =======================
   return {
     application_number,

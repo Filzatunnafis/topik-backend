@@ -11,7 +11,7 @@ function generateRegistrationNumber(testLevel, running) {
   const middle = testLevel === "TOPIK I" ? "7" : "8";
   return `021-${middle}-${String(running).padStart(3, "0")}`;
 }
-
+ 
 // =======================
 // APPROVE APPLICATION
 // =======================

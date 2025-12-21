@@ -64,7 +64,7 @@ exports.sendRejectionEmail = async (toEmail, name, reason) => {
 };
 
 // =======================
-// APPROVAL EMAIL (WITH PDF)
+// APPROVAL EMAIL WITH (PDF)
 // =======================
 const fs = require("fs");
 
