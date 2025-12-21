@@ -1,62 +1,38 @@
 const registrationService = require("../services/registration.service");
 const emailService = require("../services/email.service");
-
-
-const supabase = require("../services/supabaseStorage");
-const fs = require("fs");
-const path = require("path");
+const { uploadStudentPhoto } = require("../services/supabaseStorage");
 
 exports.registerStudent = async (req, res) => {
   try {
 
     /* ===============================
-       1. UPLOAD PHOTO KE SUPABASE
-       =============================== */
-
+       1. VALIDATE PHOTO
+      =============================== */
     if (!req.file) {
-      return res.status(400).json({ success: false, message: "Photo required" });
-    }
-
-    const file = req.file;
-    const ext = path.extname(file.originalname);
-    const filename = `${Date.now()}${ext}`;
-
-    // Upload ke Supabase Storage
-    const { error: uploadError } = await supabase.storage
-      .from("student-photos")
-      .upload(filename, fs.readFileSync(file.path), {
-        contentType: file.mimetype
+      return res.status(400).json({
+        success: false,
+        message: "Photo required"
       });
-
-    if (uploadError) {
-      console.error("SUPABASE UPLOAD ERROR:", uploadError);
-      return res.status(500).json({ success: false });
     }
-
-    // PUBLIC URL
-    const { data } = supabase.storage
-      .from("student-photos")
-      .getPublicUrl(filename);
-
-    const photoUrl = data.publicUrl;
-
-    // Padam file sementara dari server
-    fs.unlinkSync(file.path);
 
     /* ===============================
-       2. SIMPAN APPLICATION KE DB
+       2. UPLOAD PHOTO TO SUPABASE
        =============================== */
+    const photoUrl = await uploadStudentPhoto(req.file);
 
+    /* ===============================
+       3. SAVE APPLICATION TO DB
+       =============================== */
     const result = await registrationService.createRegistration({
       ...req.body,
-      photoPath: photoUrl    // ← SATU-SATUNYA PERUBAHAN LOGIK
+      photoPath: photoUrl   
     });
 
     /* ===============================
-       3. EMAIL CONFIRMATION 
+       4. EMAIL CONFIRMATION
        =============================== */
-
-    const applicantName = req.body.englishName || req.body.koreanName;
+    const applicantName =
+      req.body.englishName || req.body.koreanName;
 
     await emailService.sendSubmissionEmail(
       req.body.email,
@@ -65,9 +41,8 @@ exports.registerStudent = async (req, res) => {
     );
 
     /* ===============================
-       4. RESPONSE 
+       5. RESPONSE
        =============================== */
-
     res.status(201).json({
       success: true,
       application_number: result.application_number,
