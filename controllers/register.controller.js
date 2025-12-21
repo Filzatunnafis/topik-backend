@@ -1,13 +1,14 @@
 const registrationService = require("../services/registration.service");
 const emailService = require("../services/email.service");
 const { uploadStudentPhoto } = require("../services/supabaseStorage");
+const applicationService = require("../services/application.service");
 
 exports.registerStudent = async (req, res) => {
   try {
 
     /* ===============================
        1. VALIDATE PHOTO
-      =============================== */
+    =============================== */
     if (!req.file) {
       return res.status(400).json({
         success: false,
@@ -16,36 +17,53 @@ exports.registerStudent = async (req, res) => {
     }
 
     /* ===============================
-       2. UPLOAD PHOTO TO SUPABASE
-       =============================== */
-    const photoUrl = await uploadStudentPhoto(req.file);
+       2. GENERATE APPLICATION NUMBER
+    =============================== */
+    const applicationNumber =
+      applicationService.generateApplicationNumber();
+
+    const fullName =
+      req.body.englishName || req.body.koreanName || "UNKNOWN";
 
     /* ===============================
-       3. SAVE APPLICATION TO DB
-       =============================== */
+       3. UPLOAD PHOTO (ONCE)
+    =============================== */
+    const photoUrl = await uploadStudentPhoto(
+      req.file,
+      applicationNumber,
+      fullName
+    );
+
+    if (!photoUrl) {
+      throw new Error("Photo upload failed");
+    }
+
+    /* ===============================
+       4. SAVE APPLICATION TO DB
+    =============================== */
     const result = await registrationService.createRegistration({
       ...req.body,
-      photoPath: photoUrl   
+      application_number: applicationNumber,
+      photopath: photoUrl
     });
 
     /* ===============================
-       4. EMAIL CONFIRMATION
-       =============================== */
-    const applicantName =
-      req.body.englishName || req.body.koreanName;
+       5. EMAIL CONFIRMATION
+    =============================== */
+    const applicantName = fullName;
 
     await emailService.sendSubmissionEmail(
       req.body.email,
       applicantName,
-      result.application_number
+      applicationNumber
     );
 
     /* ===============================
-       5. RESPONSE
-       =============================== */
+       6. RESPONSE
+    =============================== */
     res.status(201).json({
       success: true,
-      application_number: result.application_number,
+      application_number: applicationNumber,
       status: "PENDING"
     });
 

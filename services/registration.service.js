@@ -15,6 +15,7 @@ module.exports.createRegistration = async (data) => {
   // 1. Ambil data dari controller
   // =======================
   const {
+    application_number,
     test_level,
     englishName,
     koreanName,
@@ -31,11 +32,6 @@ module.exports.createRegistration = async (data) => {
     photoPath
   } = data;
 
-  // =======================
-  // 2. Generate APPLICATION NUMBER
-  // =======================
-  const application_number =
-    applicationService.generateApplicationNumber();
 
   // =======================
   // 3. Normalisasi data
