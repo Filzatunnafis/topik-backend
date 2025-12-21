@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:5000/admin";
+const API_BASE = "https://topik-backend-ae3y.onrender.com/admin";
 
 /* =========================
    DASHBOARD – LIST ALL
@@ -201,7 +201,7 @@ async function loadStudentFormForAdmin() {
   /* ===== PHOTO ===== */
   const img = document.getElementById("studentPhoto");
   if (img && data.photo) {
-    img.src = `http://localhost:5000/${data.photo.replace(/\\/g, "/")}`;
+    img.src = `https://topik-backend-ae3y.onrender.com/${data.photo_path}`;
   }
 
   /* ===== TEXT BINDING ===== */

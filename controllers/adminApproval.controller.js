@@ -55,7 +55,7 @@ exports.approveApplication = async (req, res) => {
     // =======================
     // 4. PREPARE DATA
     // =======================
-    const BASE_URL = process.env.BASE_URL || "http://localhost:5000";
+    const BASE_URL = process.env.BASE_URL;
 
     // Format DOB → 04 JUL 2001
     const formattedDob = new Date(app.date_of_birth)
