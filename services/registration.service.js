@@ -24,6 +24,7 @@ module.exports.createRegistration = async (data) => {
     dobIntl,
     address,
     home_phone,
+    calling_code,
     mobile_phone,
     email,
     occupation,
@@ -60,6 +61,7 @@ module.exports.createRegistration = async (data) => {
       date_of_birth,
       address,
       home_phone,
+      calling_code,   
       mobile_phone,
       email,
       occupation,
@@ -72,7 +74,7 @@ module.exports.createRegistration = async (data) => {
       $2, $3, $4,
       $5, $6, $7, $8, $9,
       $10, $11, $12, $13, $14,
-      $15, $16, $17
+      $15, $16, $17, $18
     )
     `,
     [
@@ -87,6 +89,7 @@ module.exports.createRegistration = async (data) => {
       finalDOB,
       address,
       home_phone,
+      calling_code,
       mobile_phone,
       email,
       occupation,

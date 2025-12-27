@@ -18,3 +18,6 @@ Thumbs.db
 
 # editor settings
 .vscode
+
+# Sensitive files
+public/
