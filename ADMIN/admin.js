@@ -242,7 +242,10 @@ async function loadStudentFormForAdmin() {
   setText("dob", formatDOB(data.date_of_birth));
   setText("address", data.address);
   setText("home_phone", data.home_phone);
-  setText("mobile_phone", data.mobile_phone);
+    const mobileFull = data.mobile_phone
+    ? `+${data.calling_code}${data.mobile_phone}`
+    : "";
+  setText("mobile_phone", mobileFull);
   setText("email", data.email);
   setText("purpose", data.purpose_of_application);
   setText(
