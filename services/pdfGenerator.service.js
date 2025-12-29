@@ -6,21 +6,24 @@ const path = require("path");
 // HELPER 
 // =======================
 
-function getSignatureBase64() {
-  const sigPath = path.join(__dirname, "../public/signature.png");
-  const img = fs.readFileSync(sigPath);
-  return `data:image/png;base64,${img.toString("base64")}`;
-}
+const fetch = require("node-fetch");
 
-function getStudentPhotoBase64(photoPath) {
-  if (!photoPath) return "";
+async function getStudentPhotoBase64(photoUrl) {
+  if (!photoUrl) return "";
 
   try {
-    const imgPath = path.resolve(photoPath);
-    const img = fs.readFileSync(imgPath);
-    return `data:image/jpeg;base64,${img.toString("base64")}`;
+    const res = await fetch(photoUrl);
+    if (!res.ok) {
+      console.warn("Photo URL not accessible:", photoUrl);
+      return "";
+    }
+
+    const buffer = await res.arrayBuffer();
+    const base64 = Buffer.from(buffer).toString("base64");
+
+    return `data:image/jpeg;base64,${base64}`;
   } catch (err) {
-    console.error("PHOTO LOAD ERROR:", err.message);
+    console.error("PHOTO FETCH ERROR:", err.message);
     return "";
   }
 }
@@ -80,7 +83,7 @@ exports.generateProofPDF = async (application) => {
     "{{name_english}}": application.english_name || "",
     "{{gender}}": application.gender || "",
     "{{dob}}": formatDOB(application.date_of_birth),
-    "{{photo_base64}}": getStudentPhotoBase64(application.photo),
+    "{{photo_base64}}": await getStudentPhotoBase64(application.photo),
     "{{signature_base64}}": getSignatureBase64()
   };
 
