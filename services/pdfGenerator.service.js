@@ -1,6 +1,7 @@
-const puppeteer = require("puppeteer");
+const puppeteer = require("puppeteer-core");
 const fs = require("fs");
 const path = require("path");
+const fetch = require("node-fetch"); 
 
 // =======================
 // HELPER 
@@ -95,16 +96,16 @@ exports.generateProofPDF = async (application) => {
   }
 
   // 5️. Generate PDF (Puppeteer)
-  const browser = await puppeteer.launch({
+ const browser = await puppeteer.launch({
+  executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || "/usr/bin/chromium-browser",
   headless: "new",
   args: [
     "--no-sandbox",
     "--disable-setuid-sandbox",
-    "--allow-file-access-from-files",
     "--disable-dev-shm-usage",
     "--disable-gpu"
   ]
- });
+});
 
   const page = await browser.newPage();
   await page.setContent(html, { waitUntil: "networkidle0" });
