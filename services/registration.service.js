@@ -1,7 +1,7 @@
 // =======================
 // REGISTRATION SERVICE
 // =======================
-// Digunakan SEMASA STUDENT SUBMIT APPLICATION
+// Digunakan masa applicant submit
 // BUKAN untuk admin approve
 // NDA generate registration number
 

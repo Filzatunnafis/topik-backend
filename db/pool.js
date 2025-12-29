@@ -4,13 +4,9 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false },
 
-  max: 1,                     
-  connectionTimeoutMillis: 15000,
-
-  statement_timeout: 10000,
-  query_timeout: 10000,
-
-  prepareThreshold: 0
+  max: 1, 
+  idleTimeoutMillis: 10000,
+  connectionTimeoutMillis: 5000
 });
 
 module.exports = pool;
