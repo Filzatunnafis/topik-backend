@@ -6,29 +6,32 @@ const path = require("path");
 // HELPER 
 // =======================
 
-const fetch = require("node-fetch");
+function getSignatureBase64() {
+  const sigPath = path.join(__dirname, "../public/signature.png");
+  if (!fs.existsSync(sigPath)) return "";
 
-async function getStudentPhotoBase64(photoUrl) {
-  if (!photoUrl) return "";
+  const img = fs.readFileSync(sigPath);
+  return `data:image/png;base64,${img.toString("base64")}`;
+}
+
+async function getStudentPhotoBase64(photoValue) {
+  if (!photoValue) return "";
 
   try {
+    const photoUrl = photoValue.startsWith("http")
+      ? photoValue
+      : `https://dxvbqcnktatwnpwoukzw.supabase.co/storage/v1/object/public/${photoValue}`;
+
     const res = await fetch(photoUrl);
-    if (!res.ok) {
-      console.warn("Photo URL not accessible:", photoUrl);
-      return "";
-    }
+    if (!res.ok) return "";
 
     const buffer = await res.arrayBuffer();
-    const base64 = Buffer.from(buffer).toString("base64");
-
-    return `data:image/jpeg;base64,${base64}`;
+    return `data:image/jpeg;base64,${Buffer.from(buffer).toString("base64")}`;
   } catch (err) {
     console.error("PHOTO FETCH ERROR:", err.message);
     return "";
   }
 }
-
-
 // =======================
 // FORMAT DOB (ISO)
 // =======================
