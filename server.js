@@ -40,7 +40,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   helmet({
-    contentSecurityPolicy: false
+    contentSecurityPolicy: false,
+    frameguard: { action: "deny" }
   })
 );
 
