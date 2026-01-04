@@ -5,7 +5,7 @@
 // BUKAN untuk admin approve
 // NDA generate registration number
 
-const pool = require("../db/pool");
+const { safeQuery } = require("../db/safeQuery");
 const applicationService = require("./application.service");
 // ⬆ Service khas untuk generate APPLICATION NUMBER
 
@@ -46,7 +46,7 @@ module.exports.createRegistration = async (data) => {
   // =======================
   // 4. Insert ke DB
   // =======================
-  await pool.query(
+  await safeQuery(
     `
     INSERT INTO exam_registrations (
       application_number,
